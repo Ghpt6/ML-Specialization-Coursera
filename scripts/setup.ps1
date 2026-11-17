@@ -92,6 +92,9 @@ try {
         & $UvExe sync --project $CoursePath --python $RuntimePython --locked --no-dev
         if ($LASTEXITCODE -ne 0) { throw "Dependency installation failed for Course $number." }
 
+        & $VenvPython (Join-Path $PSScriptRoot 'repair_venv_version.py')
+        if ($LASTEXITCODE -ne 0) { throw "Version metadata repair failed for Course $number." }
+
         & $VenvPython -m ipykernel install --sys-prefix --name "ml-course-$number" --display-name "ML Course $number (Python 3.11)"
         if ($LASTEXITCODE -ne 0) { throw "Kernel setup failed for Course $number." }
         & $VenvPython -m pip check

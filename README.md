@@ -50,6 +50,10 @@ VS Code 会优先记住 notebook 上次使用的内核；若以前打开过该�
 这是编辑器的本地选择记录，详见 [VS Code 内核选择说明](https://code.visualstudio.com/docs/datascience/jupyter-kernel-management)。
 仅切换终端中的 Python 不会自动切换已运行的 notebook 内核。
 
+如果切换内核后 notebook 的 `language_info.version` 出现 `3.11.-1`，这是编辑器未识别到补丁版本号，并非实际安装了这个版本。
+安装器会在同步依赖后，根据实际解释器补全 `.venv/pyvenv.cfg` 中的 `version` 和 `version_info`，避免 uv 仅记录 `3.11` 时触发此问题。
+已有环境可重新运行对应课程的安装命令修复；随后在 VS Code 命令面板执行 `Python: Refresh All Environment Managers`，重新选择课程内核。若仍显示缓存版本，再执行 `Developer: Reload Window`。
+
 ### 检查与维护
 
 安装结束会自动运行依赖检查，以及真实 Jupyter 内核中的静态图和交互图检查。课程 1 还检查原始 overfitting 交互图的两种模式、1–6 次多项式和正则化；课程 2 检查 TensorFlow/Keras 与 XGBoost 的实际拟合。

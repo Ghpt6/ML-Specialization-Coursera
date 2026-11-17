@@ -4,6 +4,7 @@ import asyncio
 import importlib.metadata
 import os
 from pathlib import Path
+import platform
 import sys
 import warnings
 
@@ -110,6 +111,12 @@ def main():
     course_dir = ROOT / COURSES[args.course]
     assert sys.version_info[:2] == (3, 11), sys.version
     assert Path(sys.prefix).resolve() == (course_dir / ".venv").resolve(), sys.prefix
+    config = dict(
+        tuple(part.strip() for part in line.split("=", 1))
+        for line in (Path(sys.prefix) / "pyvenv.cfg").read_text(encoding="utf-8").splitlines()
+        if "=" in line
+    )
+    assert config.get("version") == config.get("version_info") == platform.python_version(), config
     for package in ("numpy", "scipy", "scikit-learn", "matplotlib", "ipympl", "jupyterlab"):
         print(f"{package}: {importlib.metadata.version(package)}")
     check_notebook_kernel(course_dir, args.course)
