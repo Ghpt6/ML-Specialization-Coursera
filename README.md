@@ -40,11 +40,14 @@ Python 不会注册到系统或加入系统 PATH，Jupyter 内核也仅安装到
 .\start-lab.cmd 2   # 使用课程 2 环境打开 JupyterLab
 ```
 
-在 JupyterLab 中打开相应的 notebook，选择 `ML Course 1 (Python 3.11)` 或 `ML Course 2 (Python 3.11)` 内核。
+现有的课程 1、2 notebook 已分别将默认内核设为 `ml-course-1` 和 `ml-course-2`，显示名称为 `ML Course 1 (Python 3.11)` 和 `ML Course 2 (Python 3.11)`，目标 Python 版本为 3.11.15。
+安装后从对应课程的 JupyterLab 打开 notebook，会按文件中的内核名匹配该课程环境；这些元数据不包含个人电脑的绝对路径或解释器哈希。
 内核从 notebook 所在目录启动，因此课程代码中的 `./deeplearning.mplstyle` 和相对数据路径可以正常解析。
 
-VS Code 用户可打开根目录的 `ML-Specialization.code-workspace`，安装推荐的 Python 和 Jupyter 扩展。
-打开 notebook 后，在“选择内核”中选择所属课程的 `.venv\Scripts\python.exe`；以前打开过的 notebook 可能仍记着原来的 Python 3.14，需要手动切换一次，再从头运行。
+VS Code 用户可打开根目录的 `ML-Specialization.code-workspace`，安装推荐的 Python 和 Jupyter 扩展，也可以单独打开某一门课程的目录。
+每个课程目录的 `.vscode/settings.json` 将默认 Python 解释器设为该目录内的 `.venv`。
+VS Code 会优先记住 notebook 上次使用的内核；若以前打开过该文件且仍选中 Python 3.14，在“选择内核”中切换到所属课程的 `.venv\Scripts\python.exe` 一次，再从头运行。
+这是编辑器的本地选择记录，详见 [VS Code 内核选择说明](https://code.visualstudio.com/docs/datascience/jupyter-kernel-management)。
 仅切换终端中的 Python 不会自动切换已运行的 notebook 内核。
 
 ### 检查与维护
