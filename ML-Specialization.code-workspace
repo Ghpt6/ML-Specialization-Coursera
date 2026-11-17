@@ -1,0 +1,19 @@
+{
+  "folders": [
+    {
+      "name": "Course 1",
+      "path": "Course 1 - Supervised Machine Learning (Regression and Classification)"
+    },
+    {
+      "name": "Course 2",
+      "path": "Course 2 - Advanced Learning Algorithms"
+    }
+  ],
+  "settings": {
+    "python.defaultInterpreterPath": "${workspaceFolder}/.venv",
+    "python.terminal.activateEnvironment": true
+  },
+  "extensions": {
+    "recommendations": ["ms-python.python", "ms-toolsai.jupyter"]
+  }
+}

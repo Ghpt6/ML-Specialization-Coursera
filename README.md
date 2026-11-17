@@ -6,5 +6,59 @@
 
 欢迎 Fork 本仓库，供个人学习使用。如果发现内容缺失，欢迎在 GitHub 上提交 Issue。祝学习愉快 :)
 
+## 本地一键安装（Windows x64）
+
+课程 1、课程 2 各自使用课程目录下的 `.venv`，依赖互不混用。课程 3 暂未配置环境。
+首次安装需要联网访问 GitHub 和 PyPI；不需要预装 Python、uv 或 Anaconda，也不需要管理员权限。
+
+克隆后，在仓库根目录双击 `setup.cmd`，即可安装课程 1 和课程 2。也可以在 PowerShell 中按需安装：
+
+```powershell
+.\setup.cmd 1       # 仅安装课程 1
+.\setup.cmd 2       # 仅安装课程 2
+.\setup.cmd all     # 安装两个独立环境（默认）
+```
+
+安装器下载固定版本的 uv，并校验下载文件的 SHA256；将 Python 3.11.15、下载缓存和辅助文件放入根目录的 `.tools`。
+每门课程的 `pyproject.toml` 指定直接依赖，`uv.lock` 固定全部依赖版本及下载哈希，`.python-version` 固定 Python 版本。
+环境及工具目录均已被 Git 忽略；其他人克隆配置文件后会在自己的项目目录中重建环境。
+Python 不会注册到系统或加入系统 PATH，Jupyter 内核也仅安装到相应课程的 `.venv`。
+
+| 环境 | Python | 主要依赖 |
+| --- | --- | --- |
+| 课程 1 | 3.11.15 | NumPy 1.26.4、SciPy 1.10.1、scikit-learn 1.1.3、Matplotlib 3.7.5 |
+| 课程 2 | 3.11.15 | 上述基础库，以及 TensorFlow 2.15.1 / Keras 2、pandas 1.5.3、XGBoost 2.0.3、NetworkX 3.2.1 |
+
+两个环境均包含 JupyterLab、ipykernel、ipywidgets 和 ipympl，并固定 IPython 8.37.0 与 matplotlib-inline 0.1.7，以兼容旧 Matplotlib 的 notebook 绘图接口。
+课程 2 的 TensorFlow 下载较大，Windows 下使用 CPU；安装包名为 `tensorflow-intel`，课程中的 `import tensorflow` 保持原样。
+固定旧版 scikit-learn 是为了兼容课程原代码中的 `penalty='none'` 和 `normalize=True`；后者可能显示弃用警告，不是运行错误。
+
+### 启动实验
+
+```powershell
+.\start-lab.cmd 1   # 使用课程 1 环境打开 JupyterLab
+.\start-lab.cmd 2   # 使用课程 2 环境打开 JupyterLab
+```
+
+在 JupyterLab 中打开相应的 notebook，选择 `ML Course 1 (Python 3.11)` 或 `ML Course 2 (Python 3.11)` 内核。
+内核从 notebook 所在目录启动，因此课程代码中的 `./deeplearning.mplstyle` 和相对数据路径可以正常解析。
+
+VS Code 用户可打开根目录的 `ML-Specialization.code-workspace`，安装推荐的 Python 和 Jupyter 扩展。
+打开 notebook 后，在“选择内核”中选择所属课程的 `.venv\Scripts\python.exe`；以前打开过的 notebook 可能仍记着原来的 Python 3.14，需要手动切换一次，再从头运行。
+仅切换终端中的 Python 不会自动切换已运行的 notebook 内核。
+
+### 检查与维护
+
+安装结束会自动运行依赖检查，以及真实 Jupyter 内核中的静态图和交互图检查。课程 1 还检查原始 overfitting 交互图的两种模式、1–6 次多项式和正则化；课程 2 检查 TensorFlow/Keras 与 XGBoost 的实际拟合。
+这些检查不执行或填写编程作业，也不修改课程源文件。
+
+脚本可重复执行。执行前请关闭正在使用对应 `.venv` 的 notebook 内核及 JupyterLab；同步会恢复锁定的依赖版本，并移除该环境中不在锁定文件里的额外包。
+如果下载中断，保持网络可用后再次运行。若已有 `.venv` 使用其他 Python 版本，脚本会停止并提示先重命名旧目录。
+自动化执行可直接运行 `powershell -NoProfile -ExecutionPolicy Bypass -File .\scripts\setup.ps1 1`，避免 `.cmd` 末尾的按键等待。
+
+需要更改依赖时，编辑对应课程的 `pyproject.toml`，然后使用项目自带的 `.tools\uv-0.11.24\uv.exe lock --project "课程目录"` 更新锁定文件，再重新运行安装器验证。
+提交 `pyproject.toml`、`uv.lock`、`.python-version` 和根目录的脚本、工作区配置及说明，即可让其他克隆用户复现环境。
+移动项目目录后应重建 `.venv`，不要直接复制已安装的虚拟环境。
+
 ## 附注
 如果你想获取深度学习课程的未解答练习，请查看[这个仓库](https://github.com/karkir0003/Deep-Learning-Specialization-Coursera/tree/main)。
